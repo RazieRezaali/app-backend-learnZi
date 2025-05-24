@@ -2,29 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use Log;
+use Exception;
 use App\Models\Category;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CategoryStoreReques;
 
 class CategoryController extends Controller
 {
     /**
     * @OA\Post(
-    *     path="/api/category",
+    *     path="/api/categories",
     *     tags={"Category"},
     *     summary="Register a new category",
     *     description="This endpoint allows you to store a new category.",
-    *     operationId="store",
     *     @OA\RequestBody(
     *         required=true,
     *         @OA\MediaType(
     *             mediaType="multipart/form-data",
     *             @OA\Schema(
-    *                 required={"name","user_id"},
+    *                 required={"name"},
     *                 @OA\Property(property="name", type="string", example="fruits"),
-    *                 @OA\Property(property="parent", type="integer", example="12"),
-    *                 @OA\Property(property="user_id", type="integer", example="14")
+    *                 @OA\Property(property="parent_id", type="integer", example="12"),
     *             )
     *         )
     *     ),
@@ -33,11 +31,11 @@ class CategoryController extends Controller
     *         description="Successful operation",
     *         @OA\JsonContent(
     *             @OA\Property(property="success", type="boolean", example=true),
-    *             @OA\Property(property="message", type="string", example="User registered successfully."),
+    *             @OA\Property(property="message", type="string", example="category stored successfully."),
     *             @OA\Property(property="category", type="object",
     *                 @OA\Property(property="id", type="integer", example=1),
     *                 @OA\Property(property="name", type="string", example="fruits"),
-    *                 @OA\Property(property="parent", type="integer", example="12"),
+    *                 @OA\Property(property="parent_id", type="integer", example="12"),
     *                 @OA\Property(property="user_id", type="integer", example="14")
     *             )
     *         )
@@ -97,76 +95,109 @@ class CategoryController extends Controller
     public function store(CategoryStoreReques $request)
     {
         $data = $request->validated();
-        $category = Category::create([
-            'name'        => $data['name'],
-            'parent_id'   => $data['parent_id'] ?? null,
-            'user_id'     => $data['user_id']
-        ]);
-        return response()->json(['message' => 'category stored successfully', 'category' => $category]);
-    }
-
-    public function getUserCategories($userId)
-    {
-        $categories = Category::where('user_id',$userId)->get();
-        return response()->json([
-            'message' => 'categories are recieved successfully',
-            'characters' => $categories
-        ]);
-    }
-
-    public function getUserCategoriesWithCards($userId)
-    {
-        $categories = Category::where('user_id', $userId)
-            ->with(['cards.character']) // eager load cards + character
-            ->get();
-
-        return response()->json($categories);
-    }
-
-    public function getUserCategoryTree($userId)
-    {
-        $categories = Category::with(['childrenRecursive.cards.character', 'cards.character'])
-            ->where('user_id', $userId)
-            ->whereNull('parent_id')
-            ->get();
-
-        return response()->json($categories);
-    }
-
-    public function getRootCategories($userId){
-        $categories = Category::where('user_id',$userId)->whereNull('parent_id')->get();
-        return response()->json($categories);
-    }
-
-    public function getCardsAndCategories($categoryId){
-        $category = Category::find($categoryId);
-        $categoryChildren = $category->children;
-        $cards = $category->cards()->with('character')->get();
-        return response()->json([
-            'categoryChildren' => $categoryChildren,
-            'cards'            => $cards 
-        ]);
-    }
-
-    public function getTestCategories(Request $request){
-        $user = Auth::user();
-        if (!$user) {
-            return response()->json(['message' => 'Unauthenticated'], 401);
+        try{
+            $category = Category::create([
+                'name'        => $data['name'],
+                'parent_id'   => $data['parent_id'] ?? null,
+                'user_id'     => auth()->user()->id,
+            ]);
+            return response()->json(['message' => 'category stored successfully', 'category' => $category]);
+        } catch(Exception $e){
+            Log::info($e->getMessage());
+            return response()->json(['message' => 'error'], 500);
         }
-        $categories = Category::where('user_id',$user->id)->get();        
-        return response()->json($categories);
     }
 
-    public function getTestCharacters(Request $request, $category_id){
-        $user = Auth::user();
-        if (!$user) {
-            return response()->json(['message' => 'Unauthenticated'], 401);
+    public function index()
+    {
+        try{
+            $categories = Category::where('user_id', auth()->user()->id)->get();
+            return response()->json([
+                'message' => 'categories retrieved successfully.',
+                'categories' => $categories
+            ]);
+        } catch(Exception $e){
+            Log::info($e->getMessage());
+            return response()->json(['message' => 'error'], 500);
         }
-        if(!$category_id){
-            return response()->json(['message' => 'Not Found'], 404);
-        }
-        $category = Category::find($category_id);
-        $cards = $category->cards()->with('character')->get();
-        return response()->json($cards);
     }
+
+    public function getCategoryTree()
+    {
+        try{
+            $categories = Category::with(['childrenRecursive.cards.character', 'cards.character'])
+                ->where('user_id', auth()->user()->id)
+                ->whereNull('parent_id')
+                ->get();
+            return response()->json([
+                'message' => 'categories retrieved successfully.',
+                'characters' => $categories
+            ]);
+        } catch(Exception $e){
+            Log::info($e->getMessage());
+            return response()->json(['message' => 'error'], 500);
+        }
+    }
+
+    public function getCategoryRoot(){
+        try{
+            $categories = Category::where('user_id', auth()->user()->id)->whereNull('parent_id')->get();
+            return response()->json([
+                'message'    => 'categories retrieved successfully.',
+                'categories' => $categories
+            ]);
+        } catch(Exception $e){
+            Log::info($e->getMessage());
+            return response()->json(['message' => 'error'], 500);
+        }
+    }
+
+    public function getCategoryCards($categoryId){
+        try{
+            $category = Category::find($categoryId);
+            $categoryChildren = $category->children;
+            $cards = $category->cards()->with('character')->get();
+            return response()->json([
+                'message' => 'cards retrieved successfully.',
+                'categoryChildren' => $categoryChildren,
+                'cards'            => $cards 
+            ]);
+        } catch(Exception $e){
+            Log::info($e->getMessage());
+            return response()->json(['message' => 'error'], 500);
+        }  
+    }
+
+    public function getCategoryQuizCharacters($categoryId){
+        try{
+            $category = Category::find($categoryId);
+            $cards = $category->cards()->with('character')->get();
+            return response()->json([
+                'message' => 'cards retrieved successfully.',
+                'cards'   => $cards 
+            ]);
+        } catch(Exception $e){
+            Log::info($e->getMessage());
+            return response()->json(['message' => 'error'], 500);
+        }
+    }
+
+    // public function getUserCategoriesWithCards($userId)
+    // {
+    //     $categories = Category::where('user_id', $userId)
+    //         ->with(['cards.character']) // eager load cards + character
+    //         ->get();
+
+    //     return response()->json($categories);
+    // }
+
+    // public function getTestCategories(Request $request){
+    //     $user = Auth::user();
+    //     if (!$user) {
+    //         return response()->json(['message' => 'Unauthenticated'], 401);
+    //     }
+    //     $categories = Category::where('user_id',$user->id)->get();        
+    //     return response()->json($categories);
+    // }
+
 }

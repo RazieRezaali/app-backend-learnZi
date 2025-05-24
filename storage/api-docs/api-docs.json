@@ -604,35 +604,30 @@
                 }
             }
         },
-        "/api/category": {
+        "/api/categories": {
             "post": {
                 "tags": [
                     "Category"
                 ],
                 "summary": "Register a new category",
                 "description": "This endpoint allows you to store a new category.",
-                "operationId": "store",
+                "operationId": "71fcad552bb0eaba9fb191fd8d8dcab0",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "multipart/form-data": {
                             "schema": {
                                 "required": [
-                                    "name",
-                                    "user_id"
+                                    "name"
                                 ],
                                 "properties": {
                                     "name": {
                                         "type": "string",
                                         "example": "fruits"
                                     },
-                                    "parent": {
+                                    "parent_id": {
                                         "type": "integer",
                                         "example": "12"
-                                    },
-                                    "user_id": {
-                                        "type": "integer",
-                                        "example": "14"
                                     }
                                 },
                                 "type": "object"
@@ -653,7 +648,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "User registered successfully."
+                                            "example": "category stored successfully."
                                         },
                                         "category": {
                                             "properties": {
@@ -665,7 +660,7 @@
                                                     "type": "string",
                                                     "example": "fruits"
                                                 },
-                                                "parent": {
+                                                "parent_id": {
                                                     "type": "integer",
                                                     "example": "12"
                                                 },

@@ -23,7 +23,10 @@ class CharacterController extends Controller
     public function getCharactersByLevel($level)
     {
         $characters = Character::where('hsk_level',$level)->get();
-        return response()->json(['message' => 'characters are recieved successfully', 'characters' => $characters]);
+        return response()->json([
+            'message'    => 'characters are recieved successfully', 
+            'characters' => $characters
+        ]);
     }
 
     public function getCharactersBySearch(Request $request)
