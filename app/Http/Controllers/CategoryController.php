@@ -165,7 +165,7 @@ class CategoryController extends Controller
         } catch(Exception $e){
             Log::info($e->getMessage());
             return response()->json(['message' => 'error'], 500);
-        }  
+        }
     }
 
     public function getCategoryQuizCharacters($categoryId){

@@ -36,6 +36,7 @@ Route::get('/user', function (Request $request) {
 
 Route::post('user/register',[AuthController::class,'register']);
 Route::post('user/login',[AuthController::class,'login']);
+Route::middleware('auth:sanctum')->post('user/logout', [AuthController::class, 'logout']);
 Route::middleware('auth:sanctum')->get('user/profile',[AuthController::class,'getProfile']);
 
 Route::get('countries', [CountryController::class, 'index']);
