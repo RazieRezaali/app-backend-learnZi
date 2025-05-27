@@ -15,6 +15,7 @@ Route::prefix('characters')
         Route::get('/', 'index')->name('get.characters');
         Route::get('/search', 'getCharactersBySearch')->name('get.characters.search');
         Route::get('/{character}', 'getCharacterDetail')->name('get.character.details');
+        Route::get('/id/{character}', 'getCharacterId')->name('get.character.id');
         Route::get('/level/{level}', 'getCharactersByLevel')->name('get.characters.level');
 });
 

@@ -53,4 +53,16 @@ class CharacterController extends Controller
             'character'  => $character
         ]);
     }
+
+    public function getCharacterId($character)
+    {
+        $characterId = Character::where('character',$character)->first()->id;
+        if(!$characterId){
+            return response()->json(['message' => 'Character Not Found'], 404);
+        }
+        return response()->json([
+            'message'     => 'Character retrieved successfully.',
+            'characterId' => $characterId
+        ]);
+    }
 }

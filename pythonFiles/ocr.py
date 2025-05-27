@@ -40,7 +40,7 @@ def ocr_api():
 
         # Convert the image bytes to a NumPy array
         image = Image.open(io.BytesIO(image_bytes)).convert('RGB')
-        image.save("debug_uploaded.png")
+        #image.save("debug_uploaded.png")
         image_np = np.array(image)
 
         # Log the image shape
