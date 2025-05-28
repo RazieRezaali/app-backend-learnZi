@@ -59,14 +59,6 @@ class CategoryController extends Controller
     *         )
     *     ),
     *     @OA\Response(
-    *         response=403,
-    *         description="Forbidden",
-    *         @OA\JsonContent(
-    *             @OA\Property(property="success", type="boolean", example=false),
-    *             @OA\Property(property="message", type="string", example="Authorization needed.")
-    *         )
-    *     ),
-    *     @OA\Response(
     *         response=404,
     *         description="Not found",
     *         @OA\JsonContent(
@@ -135,7 +127,7 @@ class CategoryController extends Controller
     *         description="Successful operation",
     *         @OA\JsonContent(
     *             @OA\Property(property="success", type="boolean", example=true),
-    *             @OA\Property(property="message", type="string", example="category stored successfully."),
+    *             @OA\Property(property="message", type="string", example="categories are retrieved successfully."),
     *             @OA\Property(property="category", type="object",
     *                 @OA\Property(property="id", type="integer", example=1),
     *                 @OA\Property(property="name", type="string", example="fruits"),
@@ -150,14 +142,6 @@ class CategoryController extends Controller
     *         @OA\JsonContent(
     *             @OA\Property(property="success", type="boolean", example=false),
     *             @OA\Property(property="message", type="string", example="Authentication needed.")
-    *         )
-    *     ),
-    *     @OA\Response(
-    *         response=403,
-    *         description="Forbidden",
-    *         @OA\JsonContent(
-    *             @OA\Property(property="success", type="boolean", example=false),
-    *             @OA\Property(property="message", type="string", example="Authorization needed.")
     *         )
     *     ),
     *     @OA\Response(
@@ -189,8 +173,6 @@ class CategoryController extends Controller
                 'message' => 'categories retrieved successfully.',
                 'categories' => $categories
             ]);
-        } catch(AuthorizationException $e) {
-            return response()->json(['message' => 'Authorization Exception'], 403);
         } catch(ModelNotFoundException $e) {
             return response()->json(['message' => 'Not Found'], 404);
         } catch (Exception $e) {
@@ -211,7 +193,7 @@ class CategoryController extends Controller
     *         description="Successful operation",
     *         @OA\JsonContent(
     *             @OA\Property(property="success", type="boolean", example=true),
-    *             @OA\Property(property="message", type="string", example="category stored successfully."),
+    *             @OA\Property(property="message", type="string", example="categories are retrieved successfully."),
     *             @OA\Property(property="category", type="object",
     *                 @OA\Property(property="id", type="integer", example=1),
     *                 @OA\Property(property="name", type="string", example="fruits"),
@@ -226,14 +208,6 @@ class CategoryController extends Controller
     *         @OA\JsonContent(
     *             @OA\Property(property="success", type="boolean", example=false),
     *             @OA\Property(property="message", type="string", example="Authentication needed.")
-    *         )
-    *     ),
-    *     @OA\Response(
-    *         response=403,
-    *         description="Forbidden",
-    *         @OA\JsonContent(
-    *             @OA\Property(property="success", type="boolean", example=false),
-    *             @OA\Property(property="message", type="string", example="Authorization needed.")
     *         )
     *     ),
     *     @OA\Response(
@@ -265,8 +239,6 @@ class CategoryController extends Controller
                 'message' => 'categories retrieved successfully.',
                 'categories' => $categories
             ]);
-        } catch(AuthorizationException $e) {
-            return response()->json(['message' => 'Authorization Exception'], 403);
         } catch(ModelNotFoundException $e) {
             return response()->json(['message' => 'Not Found'], 404);
         } catch (Exception $e) {
@@ -287,7 +259,7 @@ class CategoryController extends Controller
     *         description="Successful operation",
     *         @OA\JsonContent(
     *             @OA\Property(property="success", type="boolean", example=true),
-    *             @OA\Property(property="message", type="string", example="category stored successfully."),
+    *             @OA\Property(property="message", type="string", example="categories are retrieved successfully."),
     *             @OA\Property(property="category", type="object",
     *                 @OA\Property(property="id", type="integer", example=1),
     *                 @OA\Property(property="name", type="string", example="fruits"),
@@ -302,14 +274,6 @@ class CategoryController extends Controller
     *         @OA\JsonContent(
     *             @OA\Property(property="success", type="boolean", example=false),
     *             @OA\Property(property="message", type="string", example="Authentication needed.")
-    *         )
-    *     ),
-    *     @OA\Response(
-    *         response=403,
-    *         description="Forbidden",
-    *         @OA\JsonContent(
-    *             @OA\Property(property="success", type="boolean", example=false),
-    *             @OA\Property(property="message", type="string", example="Authorization needed.")
     *         )
     *     ),
     *     @OA\Response(
@@ -340,8 +304,6 @@ class CategoryController extends Controller
                 'message' => 'categories retrieved successfully.',
                 'categories' => $categories
             ]);
-        } catch(AuthorizationException $e) {
-            return response()->json(['message' => 'Authorization Exception'], 403);
         } catch(ModelNotFoundException $e) {
             return response()->json(['message' => 'Not Found'], 404);
         } catch (Exception $e) {
@@ -369,7 +331,7 @@ class CategoryController extends Controller
     *         description="Successful operation",
     *         @OA\JsonContent(
     *             @OA\Property(property="success", type="boolean", example=true),
-    *             @OA\Property(property="message", type="string", example="category stored successfully."),
+    *             @OA\Property(property="message", type="string", example="cards are retrieved successfully."),
     *             @OA\Property(property="category", type="object",
     *                 @OA\Property(property="id", type="integer", example=1),
     *                 @OA\Property(property="name", type="string", example="fruits"),
@@ -474,7 +436,7 @@ class CategoryController extends Controller
     *         description="Successful operation",
     *         @OA\JsonContent(
     *             @OA\Property(property="success", type="boolean", example=true),
-    *             @OA\Property(property="message", type="string", example="category stored successfully."),
+    *             @OA\Property(property="message", type="string", example="cards are retrieved successfully."),
     *             @OA\Property(property="category", type="object",
     *                 @OA\Property(property="id", type="integer", example=1),
     *                 @OA\Property(property="name", type="string", example="fruits"),

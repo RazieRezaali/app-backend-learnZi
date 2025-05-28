@@ -625,7 +625,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "category stored successfully."
+                                            "example": "categories are retrieved successfully."
                                         },
                                         "category": {
                                             "properties": {
@@ -667,26 +667,6 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Authentication needed."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Authorization needed."
                                         }
                                     },
                                     "type": "object"
@@ -833,26 +813,6 @@
                             }
                         }
                     },
-                    "403": {
-                        "description": "Forbidden",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Authorization needed."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
                     "404": {
                         "description": "Not found",
                         "content": {
@@ -954,7 +914,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "category stored successfully."
+                                            "example": "categories are retrieved successfully."
                                         },
                                         "category": {
                                             "properties": {
@@ -996,26 +956,6 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Authentication needed."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Authorization needed."
                                         }
                                     },
                                     "type": "object"
@@ -1092,7 +1032,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "category stored successfully."
+                                            "example": "categories are retrieved successfully."
                                         },
                                         "category": {
                                             "properties": {
@@ -1134,26 +1074,6 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Authentication needed."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Authorization needed."
                                         }
                                     },
                                     "type": "object"
@@ -1242,7 +1162,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "category stored successfully."
+                                            "example": "cards are retrieved successfully."
                                         },
                                         "category": {
                                             "properties": {
@@ -1424,7 +1344,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "category stored successfully."
+                                            "example": "cards are retrieved successfully."
                                         },
                                         "category": {
                                             "properties": {
@@ -1571,6 +1491,581 @@
                         "sanctum": []
                     }
                 ]
+            }
+        },
+        "/api/characters/level/{hskLevel}": {
+            "get": {
+                "tags": [
+                    "Character"
+                ],
+                "summary": "get characters by level",
+                "description": "This endpoint allows you to get all the characters of a certain level.",
+                "operationId": "d1c4e4a57d2e22d0b7387b8adcbcf1b2",
+                "parameters": [
+                    {
+                        "name": "hskLevel",
+                        "in": "path",
+                        "description": "The hsk level that you want to get its characters",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "characters are retrieved successfully."
+                                        },
+                                        "characters": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "character": {
+                                                    "type": "string",
+                                                    "example": "党"
+                                                },
+                                                "pinyin": {
+                                                    "type": "string",
+                                                    "example": "dǎng"
+                                                },
+                                                "definition": {
+                                                    "type": "string",
+                                                    "example": "political party, gang"
+                                                },
+                                                "stroke_count": {
+                                                    "type": "integer",
+                                                    "example": "10"
+                                                },
+                                                "radical": {
+                                                    "type": "string",
+                                                    "example": "儿"
+                                                },
+                                                "frequency_rank": {
+                                                    "type": "integer",
+                                                    "example": "411"
+                                                },
+                                                "hsk_level": {
+                                                    "type": "integer",
+                                                    "example": "6"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation failed."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "email": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The email has already been taken."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal error."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/characters/search": {
+            "get": {
+                "tags": [
+                    "Character"
+                ],
+                "summary": "get characters by keyword",
+                "description": "This endpoint allows you to get all the characters with a certain keyword.",
+                "operationId": "1a5f27ac89bfc539a64e4f753e508d2e",
+                "parameters": [
+                    {
+                        "name": "keyword",
+                        "in": "query",
+                        "description": "The keyword that you want to get characters with it",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "key"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "characters are retrieved successfully."
+                                        },
+                                        "characters": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "character": {
+                                                    "type": "string",
+                                                    "example": "党"
+                                                },
+                                                "pinyin": {
+                                                    "type": "string",
+                                                    "example": "dǎng"
+                                                },
+                                                "definition": {
+                                                    "type": "string",
+                                                    "example": "political party, gang"
+                                                },
+                                                "stroke_count": {
+                                                    "type": "integer",
+                                                    "example": "10"
+                                                },
+                                                "radical": {
+                                                    "type": "string",
+                                                    "example": "儿"
+                                                },
+                                                "frequency_rank": {
+                                                    "type": "integer",
+                                                    "example": "411"
+                                                },
+                                                "hsk_level": {
+                                                    "type": "integer",
+                                                    "example": "6"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation failed."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "email": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The email has already been taken."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal error."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/characters/{characterId}": {
+            "get": {
+                "tags": [
+                    "Character"
+                ],
+                "summary": "get details of a character",
+                "description": "This endpoint allows you to get details of a character.",
+                "operationId": "fe85240806e37e3654917c7cb8f82080",
+                "parameters": [
+                    {
+                        "name": "characterId",
+                        "in": "path",
+                        "description": "The character id that you want to get details of it",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "2"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "character retrieved successfully."
+                                        },
+                                        "characters": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "character": {
+                                                    "type": "string",
+                                                    "example": "党"
+                                                },
+                                                "pinyin": {
+                                                    "type": "string",
+                                                    "example": "dǎng"
+                                                },
+                                                "definition": {
+                                                    "type": "string",
+                                                    "example": "political party, gang"
+                                                },
+                                                "stroke_count": {
+                                                    "type": "integer",
+                                                    "example": "10"
+                                                },
+                                                "radical": {
+                                                    "type": "string",
+                                                    "example": "儿"
+                                                },
+                                                "frequency_rank": {
+                                                    "type": "integer",
+                                                    "example": "411"
+                                                },
+                                                "hsk_level": {
+                                                    "type": "integer",
+                                                    "example": "6"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation failed."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "email": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The email has already been taken."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal error."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/characters/id/{character}": {
+            "get": {
+                "tags": [
+                    "Character"
+                ],
+                "summary": "get id of a character",
+                "description": "This endpoint allows you to get id of a character.",
+                "operationId": "712761b2f9b4f88be366bc972d06b5d9",
+                "parameters": [
+                    {
+                        "name": "character",
+                        "in": "path",
+                        "description": "The character that you want to get its id",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "党"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "character id retrieved successfully."
+                                        },
+                                        "characterId": {
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation failed."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "email": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The email has already been taken."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal error."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/countries": {
@@ -1747,6 +2242,10 @@
         {
             "name": "Category",
             "description": "Category"
+        },
+        {
+            "name": "Character",
+            "description": "Character"
         },
         {
             "name": "Country",

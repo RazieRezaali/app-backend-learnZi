@@ -12,11 +12,10 @@ use App\Http\Controllers\CharacterController;
 Route::prefix('characters')
     ->controller(CharacterController::class)
     ->group(function(){
-        Route::get('/', 'index')->name('get.characters');
-        Route::get('/search', 'getCharactersBySearch')->name('get.characters.search');
-        Route::get('/{character}', 'getCharacterDetail')->name('get.character.details');
-        Route::get('/id/{character}', 'getCharacterId')->name('get.character.id');
-        Route::get('/level/{level}', 'getCharactersByLevel')->name('get.characters.level');
+        Route::get('/search', 'getCharactersBySearch')->name('characters.get.by.search');
+        Route::get('/{characterId}', 'getCharacterDetail')->name('characters.get.details');
+        Route::get('/id/{character}', 'getCharacterId')->name('characters.get.id');
+        Route::get('/level/{hskLevel}', 'getCharactersByLevel')->name('characters.get.by.level');
 });
 
 Route::prefix('categories')
@@ -25,8 +24,8 @@ Route::prefix('categories')
     ->group(function(){
         Route::post('/', 'store')->name('category.store');
         Route::get('/', 'index')->name('get.categories');
-        Route::get('/tree', 'getCategoryTree')->name('get.category.tree');
-        Route::get('/root', 'getCategoryRoot')->name('get.category.root');
+        Route::get('/tree', 'getCategoryTree')->name('category.get.tree');
+        Route::get('/root', 'getCategoryRoot')->name('category.get.root');
         Route::get('/cards/{categoryId}', 'getCategoryCards')->name('category.get.cards');
         Route::get('/quiz/{categoryId}', 'getCategoryQuizCharacters')->name('category.get.quiz.characters');
 });
