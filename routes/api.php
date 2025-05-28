@@ -23,12 +23,12 @@ Route::prefix('categories')
     ->middleware('auth:sanctum')
     ->controller(CategoryController::class)
     ->group(function(){
-        Route::post('/', 'store')->name('store.category');
+        Route::post('/', 'store')->name('category.store');
         Route::get('/', 'index')->name('get.categories');
         Route::get('/tree', 'getCategoryTree')->name('get.category.tree');
         Route::get('/root', 'getCategoryRoot')->name('get.category.root');
-        Route::get('/cards/{categoryId}', 'getCategoryCards')->name('get.category.cards');
-        Route::get('/quiz/{categoryId}', 'getCategoryQuizCharacters')->name('get.category.quiz.characters');
+        Route::get('/cards/{categoryId}', 'getCategoryCards')->name('category.get.cards');
+        Route::get('/quiz/{categoryId}', 'getCategoryQuizCharacters')->name('category.get.quiz.characters');
 });
 
 Route::get('/user', function (Request $request) {
