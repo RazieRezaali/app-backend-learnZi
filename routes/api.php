@@ -37,7 +37,6 @@ Route::prefix('cards')
         Route::post('/', 'store')->name('card.store');
         Route::get('/{cardId}', 'show')->name('card.show');
         Route::post('/description/{cardId}', 'storeDescription')->name('card.store.description');
-        
         // Route::delete('/{card}', 'destroy')->name('card.destroy');
 });
 
@@ -46,4 +45,4 @@ Route::post('user/login',[AuthController::class,'login']);
 Route::middleware('auth:sanctum')->post('user/logout', [AuthController::class, 'logout']);
 Route::middleware('auth:sanctum')->get('user/profile',[AuthController::class,'getProfile']);
 
-Route::get('countries', [CountryController::class, 'index']);
+Route::get('/countries', [CountryController::class, 'index']);

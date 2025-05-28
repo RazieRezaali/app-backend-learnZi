@@ -2458,8 +2458,8 @@
                     "Country"
                 ],
                 "summary": "get all countries",
-                "description": "This endpoint allows you to get all the countries.",
-                "operationId": "index",
+                "description": "This endpoint allows you to get all countries.",
+                "operationId": "edaabf3348bf71d9cf65b87f44ec29ce",
                 "responses": {
                     "200": {
                         "description": "Successful operation",
@@ -2473,9 +2473,9 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "User registered successfully."
+                                            "example": "countries are retrieved successfully."
                                         },
-                                        "tag": {
+                                        "countries": {
                                             "properties": {
                                                 "id": {
                                                     "type": "integer",
@@ -2483,7 +2483,7 @@
                                                 },
                                                 "name": {
                                                     "type": "string",
-                                                    "example": "essential"
+                                                    "example": "Albania"
                                                 },
                                                 "dial_code": {
                                                     "type": "string",
@@ -2491,46 +2491,6 @@
                                                 }
                                             },
                                             "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Authentication needed."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Authorization needed."
                                         }
                                     },
                                     "type": "object"
@@ -2551,38 +2511,6 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Not found."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Validation failed."
-                                        },
-                                        "errors": {
-                                            "properties": {
-                                                "email": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "string",
-                                                        "example": "The email has already been taken."
-                                                    }
-                                                }
-                                            },
-                                            "type": "object"
                                         }
                                     },
                                     "type": "object"

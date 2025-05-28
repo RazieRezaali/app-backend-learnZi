@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\Country;
-use App\Services\CountryService;
 use Illuminate\Http\Request;
+use App\Services\CountryService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CountryController extends Controller
 {
@@ -19,35 +21,18 @@ class CountryController extends Controller
     *     path="/api/countries",
     *     tags={"Country"},
     *     summary="get all countries",
-    *     description="This endpoint allows you to get all the countries.",
-    *     operationId="index",
+    *     description="This endpoint allows you to get all countries.",
     *     @OA\Response(
     *         response=200,
     *         description="Successful operation",
     *         @OA\JsonContent(
     *             @OA\Property(property="success", type="boolean", example=true),
-    *             @OA\Property(property="message", type="string", example="User registered successfully."),
-    *             @OA\Property(property="tag", type="object",
+    *             @OA\Property(property="message", type="string", example="countries are retrieved successfully."),
+    *             @OA\Property(property="countries", type="object",
     *                 @OA\Property(property="id", type="integer", example=1),
-    *                 @OA\Property(property="name", type="string", example="essential"),
+    *                 @OA\Property(property="name", type="string", example="Albania"),
     *                 @OA\Property(property="dial_code", type="string", example="+1")
     *             )
-    *         )
-    *     ),
-    *     @OA\Response(
-    *         response=401,
-    *         description="Unauthenticated",
-    *         @OA\JsonContent(
-    *             @OA\Property(property="success", type="boolean", example=false),
-    *             @OA\Property(property="message", type="string", example="Authentication needed.")
-    *         )
-    *     ),
-    *     @OA\Response(
-    *         response=403,
-    *         description="Forbidden",
-    *         @OA\JsonContent(
-    *             @OA\Property(property="success", type="boolean", example=false),
-    *             @OA\Property(property="message", type="string", example="Authorization needed.")
     *         )
     *     ),
     *     @OA\Response(
@@ -56,23 +41,6 @@ class CountryController extends Controller
     *         @OA\JsonContent(
     *             @OA\Property(property="success", type="boolean", example=false),
     *             @OA\Property(property="message", type="string", example="Not found.")
-    *         )
-    *     ),
-    *     @OA\Response(
-    *         response=422,
-    *         description="Validation error",
-    *         @OA\JsonContent(
-    *             @OA\Property(property="success", type="boolean", example=false),
-    *             @OA\Property(property="message", type="string", example="Validation failed."),
-    *             @OA\Property(
-    *                 property="errors",
-    *                 type="object",
-    *                 @OA\Property(
-    *                     property="email",
-    *                     type="array",
-    *                     @OA\Items(type="string", example="The email has already been taken.")
-    *                 )
-    *             )
     *         )
     *     ),
     *     @OA\Response(
@@ -86,6 +54,18 @@ class CountryController extends Controller
     * )
     */
     public function index(){
-        return $this->countryService->index();
+        try{ 
+            $countries = $this->countryService->getCountries();
+            return response()->json([
+                'message'    => 'Character retrieved successfully.',
+                'countries'  => $countries
+            ]);
+        } catch(ModelNotFoundException $e) {
+            return response()->json(['message' => 'Not Found'], 404);
+        } catch (Exception $e) {
+            \Log::error($e->getMessage());
+            return response()->json(['message' => 'Error'], 500);
+        }
+        
     }
 }

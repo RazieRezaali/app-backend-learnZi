@@ -1,13 +1,19 @@
 <?php 
 namespace App\Services;
 
+use Exception;
 use App\Models\Country;
 
 class CountryService{
 
-    public function index()
+    public function getCountries()
     {
-        return Country::all();
+        try{
+            return Country::all();
+        } 
+        catch(Exception $e){
+            throw $e;        
+        }        
     }
 
 }
