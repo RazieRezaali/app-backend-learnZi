@@ -423,14 +423,14 @@
                 }
             }
         },
-        "/api/card": {
+        "/api/cards": {
             "post": {
                 "tags": [
                     "Card"
                 ],
                 "summary": "Register a new card",
                 "description": "This endpoint allows you to store a new card.",
-                "operationId": "storeCard",
+                "operationId": "6a1db83adb51fba2ac318a78bc2a4fde",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -447,7 +447,7 @@
                                     },
                                     "category_id": {
                                         "type": "integer",
-                                        "example": "3"
+                                        "example": "5"
                                     }
                                 },
                                 "type": "object"
@@ -468,7 +468,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "User registered successfully."
+                                            "example": "card stored successfully."
                                         },
                                         "card": {
                                             "properties": {
@@ -476,9 +476,23 @@
                                                     "type": "integer",
                                                     "example": 1
                                                 },
+                                                "category_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
                                                 "character_id": {
                                                     "type": "integer",
-                                                    "example": "2"
+                                                    "example": 1
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-06-19T14:00:00Z"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-06-19T14:00:00Z"
                                                 }
                                             },
                                             "type": "object"
@@ -510,38 +524,18 @@
                         }
                     },
                     "403": {
-                        "description": "Forbidden",
+                        "description": " Forbidden",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "success": {
                                             "type": "boolean",
-                                            "example": false
+                                            "example": true
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "Authorization needed."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Not found."
+                                            "example": "you don't have the right permission"
                                         }
                                     },
                                     "type": "object"
@@ -601,7 +595,397 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/cards/{cardId}": {
+            "get": {
+                "tags": [
+                    "Card"
+                ],
+                "summary": "get user card",
+                "description": "This endpoint allows you to get an specific card.",
+                "operationId": "20017e08edc7ecaef95455cae72d8fe3",
+                "parameters": [
+                    {
+                        "name": "cardId",
+                        "in": "path",
+                        "description": "The ID of the card to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "card retrieved successfully."
+                                        },
+                                        "card": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "category_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "character_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "some description about this card"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-06-19T14:00:00Z"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-06-19T14:00:00Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Authentication needed."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": " Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you don't have the right permission"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal error."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/cards/description/{cardId}": {
+            "post": {
+                "tags": [
+                    "Card"
+                ],
+                "summary": "add note for a card",
+                "description": "This endpoint allows you to add note for a card.",
+                "operationId": "864f05bb524548b76e4e1941947f3bf3",
+                "parameters": [
+                    {
+                        "name": "cardId",
+                        "in": "path",
+                        "description": "The ID of the card to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "description": {
+                                        "type": "string",
+                                        "example": "some description about this card"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "card stored successfully."
+                                        },
+                                        "card": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "category_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "character_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "some description about this card"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-06-19T14:00:00Z"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-06-19T14:00:00Z"
+                                                },
+                                                "character": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "character": {
+                                                            "type": "string",
+                                                            "example": "党"
+                                                        },
+                                                        "pinyin": {
+                                                            "type": "string",
+                                                            "example": "dǎng"
+                                                        },
+                                                        "definition": {
+                                                            "type": "string",
+                                                            "example": "political party, gang"
+                                                        },
+                                                        "stroke_count": {
+                                                            "type": "integer",
+                                                            "example": "10"
+                                                        },
+                                                        "radical": {
+                                                            "type": "string",
+                                                            "example": "儿"
+                                                        },
+                                                        "frequency_rank": {
+                                                            "type": "integer",
+                                                            "example": "411"
+                                                        },
+                                                        "hsk_level": {
+                                                            "type": "integer",
+                                                            "example": "6"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Authentication needed."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": " Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you don't have the right permission"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation failed."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "email": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The email has already been taken."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal error."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/categories": {

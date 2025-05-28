@@ -12,7 +12,7 @@ class CategoryService{
         return $this;
     }
 
-    private function getUser(){
+    public function getUser(){
         return $this->user;
     }
 
