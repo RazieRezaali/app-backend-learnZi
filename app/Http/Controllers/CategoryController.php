@@ -623,4 +623,100 @@ class CategoryController extends Controller
             return response()->json(['message' => 'Error'], 500);
         }
     }
+
+    /**
+    * @OA\Delete(
+    *     path="/api/categories/{categoryId}",
+    *     tags={"Category"},
+    *     security={{"sanctum":{}}},
+    *     summary="delete a category",
+    *     description="This endpoint allows you to delete a category.",
+    *     @OA\Parameter(
+    *         name="categoryId",
+    *         in="path",
+    *         required=true,
+    *         description="The ID of the category to retrieve",
+    *         @OA\Schema(type="integer", example=1)
+    *     ),
+    *     @OA\Response(
+    *         response=200,
+    *         description="Successful operation",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="success", type="boolean", example=true),
+    *             @OA\Property(property="message", type="string", example="category deleted successfully.")
+    *         )
+    *     ),
+    *     @OA\Response(
+    *         response=401,
+    *         description="Unauthenticated",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="success", type="boolean", example=false),
+    *             @OA\Property(property="message", type="string", example="Authentication needed.")
+    *         )
+    *     ),
+    *     @OA\Response(
+    *         response=403,
+    *         description="Forbidden",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="success", type="boolean", example=false),
+    *             @OA\Property(property="message", type="string", example="Authorization needed.")
+    *         )
+    *     ),
+    *     @OA\Response(
+    *         response=404,
+    *         description="Not found",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="success", type="boolean", example=false),
+    *             @OA\Property(property="message", type="string", example="Not found.")
+    *         )
+    *     ),
+    *     @OA\Response(
+    *         response=422,
+    *         description="Validation error",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="success", type="boolean", example=false),
+    *             @OA\Property(property="message", type="string", example="Validation failed."),
+    *             @OA\Property(
+    *                 property="errors",
+    *                 type="object",
+    *                 @OA\Property(
+    *                     property="email",
+    *                     type="array",
+    *                     @OA\Items(type="string", example="The email has already been taken.")
+    *                 )
+    *             )
+    *         )
+    *     ),
+    *     @OA\Response(
+    *         response=500,
+    *         description="Unexpected error",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="success", type="boolean", example=false),
+    *             @OA\Property(property="message", type="string", example="Internal error.")
+    *         )
+    *     )
+    * )
+    */
+    public function destroy(CategoryRequest $request){
+        try{
+            $user = auth()->user();
+            $category = $this->categoryService
+                        ->setUser($user)
+                        ->setId($request->categoryId)
+                        ->checkUserCategory()
+                        ->delete();
+            return response()->json([
+                'message'  => 'category deleted successfully.'
+            ]);
+        } catch(AuthorizationException $e) {
+            return response()->json(['message' => 'Authorization Exception, you don\'t have the right permission to delete this category'], 403);
+        } catch (ValidationException $e) {
+            return response()->json(['message' => 'Validation Error'], 422);
+        } catch(ModelNotFoundException $e) {
+            return response()->json(['message' => 'Not Found'], 404);
+        } catch (Exception $e) {
+            \Log::error($e->getMessage());
+            return response()->json(['message' => 'Error'], 500);
+        }
+    }
 }

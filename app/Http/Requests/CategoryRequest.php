@@ -29,7 +29,7 @@ class CategoryRequest extends FormRequest
                 'name'       => ['required', 'string', 'min:2', 'max:30', 'unique:categories'],
                 'parent_id'  => ['sometimes', 'nullable', 'integer', 'exists:categories,id'],
             ];
-        } elseif(in_array($route->getName(), ['category.get.cards', 'category.get.quiz.characters'])){
+        } elseif(in_array($route->getName(), ['category.get.cards', 'category.get.quiz.characters', 'category.destroy'])){
             return [
                 'categoryId'  => ['required', 'integer', 'exists:categories,id'],
             ];

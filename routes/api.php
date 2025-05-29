@@ -25,6 +25,7 @@ Route::prefix('categories')
         Route::post('/', 'store')->name('category.store');
         Route::get('/', 'index')->name('get.categories');
         Route::put('/{categoryId}', 'updateCategoryName')->name('category.update.name');
+        Route::delete('/{categoryId}', 'destroy')->name('category.destroy');
         Route::get('/tree', 'getCategoryTree')->name('category.get.tree');
         Route::get('/root', 'getCategoryRoot')->name('category.get.root');
         Route::get('/cards/{categoryId}', 'getCategoryCards')->name('category.get.cards');

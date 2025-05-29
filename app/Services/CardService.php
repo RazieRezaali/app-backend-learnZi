@@ -137,7 +137,11 @@ class CardService{
     }
 
     public function deleteCard(){
-        $this->getCard()->delete();
+        try{
+            $this->getCard()->delete();
+        } catch(Exception $e){
+            throw $e;        
+        }        
     }
 
 }

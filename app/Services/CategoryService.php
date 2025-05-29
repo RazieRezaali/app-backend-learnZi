@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Models\Category;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class CategoryService{
 
@@ -104,6 +105,18 @@ class CategoryService{
             return $category->update([
                 'name' => $this->getName()
             ]);
+        } catch(Exception $e){
+            throw $e;        
+        }
+    }
+
+    public function delete(){
+        try{
+            $category = Category::find($this->getId());
+            $categoryChildren = $category->children;
+            \Log::info(json_encode($categoryChildren));
+            dd();
+            $category->delete();
         } catch(Exception $e){
             throw $e;        
         }
