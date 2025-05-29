@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -31,6 +32,11 @@ class CategoryRequest extends FormRequest
         } elseif(in_array($route->getName(), ['category.get.cards', 'category.get.quiz.characters'])){
             return [
                 'categoryId'  => ['required', 'integer', 'exists:categories,id'],
+            ];
+        } elseif($route->getName() == 'category.update.name'){
+            return [
+                'name'       => ['required', 'string', 'min:2', 'max:30', Rule::unique('categories', 'name')->ignore($this->categoryId)],
+                'categoryId' => ['required', 'integer', 'exists:categories,id'],
             ];
         }
     }

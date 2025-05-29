@@ -6,6 +6,9 @@ use App\Models\Category;
 class CategoryService{
 
     protected $user;
+    protected $id;
+    protected $relations;
+    protected $name;
 
     public function setUser($user){
         $this->user = $user;
@@ -14,6 +17,33 @@ class CategoryService{
 
     public function getUser(){
         return $this->user;
+    }
+
+    public function setName($name){
+        $this->name = $name;
+        return $this;
+    }
+
+    public function getName(){
+        return $this->name;
+    }
+
+    public function setId($id){
+        $this->id = $id;
+        return $this;
+    }
+
+    public function getId(){
+        return $this->id;
+    }
+
+    public function setRelations($relations){
+        $this->relations = $relations;
+        return $this;
+    }
+
+    public function getRelations(){
+        return $this->relations;
     }
 
     public function store($data){
@@ -51,6 +81,29 @@ class CategoryService{
             return Category::where('user_id', $this->getUser()->id)
                 ->whereNull('parent_id')
                 ->get();
+        } catch(Exception $e){
+            throw $e;        
+        }
+    }
+
+    public function checkUserCategory(){
+        try{
+            $category = Category::find($this->getId());
+            if($category->user_id !== $this->getUser()->id){
+                throw new AuthorizationException();
+            }
+            return $this;
+        } catch(Exception $e){
+            throw $e;        
+        }
+    }
+
+    public function updateCategoryName(){
+        try{
+            $category = Category::find($this->getId());
+            return $category->update([
+                'name' => $this->getName()
+            ]);
         } catch(Exception $e){
             throw $e;        
         }
