@@ -136,4 +136,8 @@ class CardService{
         }
     }
 
+    public function deleteCard(){
+        $this->getCard()->delete();
+    }
+
 }

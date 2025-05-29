@@ -331,8 +331,91 @@ class CardController extends Controller
         }
     }
 
-    // public function destroy(Card $card){
-    //     $card->delete();
-    //     return response()->json(['message' => 'card deleted successfully']);
-    // }
+    /**
+    * @OA\Delete(
+    *     path="/api/cards/{cardId}",
+    *     tags={"Card"},
+    *     security={{"sanctum":{}}},
+    *     summary="delete a card",
+    *     description="This endpoint allows you to delete a card.",
+    *     @OA\Parameter(
+    *         name="cardId",
+    *         in="path",
+    *         required=true,
+    *         description="The ID of the card to want to delete",
+    *         @OA\Schema(type="integer", example=1)
+    *     ),
+    *     @OA\Response(
+    *         response=200,
+    *         description="Successful operation",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="success", type="boolean", example=true),
+    *             @OA\Property(property="message", type="string", example="card deleted successfully.")
+    *         )
+    *     ),
+    *     @OA\Response(
+    *         response=401,
+    *         description="Unauthenticated",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="success", type="boolean", example=false),
+    *             @OA\Property(property="message", type="string", example="Authentication needed.")
+    *         )
+    *     ),
+    *     @OA\Response(
+    *         response=403, description=" Forbidden",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="success", type="boolean", example=true),
+    *             @OA\Property(property="message", type="string", example="you don't have the right permission")
+    *         )
+    *     ),
+    *     @OA\Response(
+    *         response=422,
+    *         description="Validation error",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="success", type="boolean", example=false),
+    *             @OA\Property(property="message", type="string", example="Validation failed."),
+    *             @OA\Property(
+    *                 property="errors",
+    *                 type="object",
+    *                 @OA\Property(
+    *                     property="email",
+    *                     type="array",
+    *                     @OA\Items(type="string", example="The email has already been taken.")
+    *                 )
+    *             )
+    *         )
+    *     ),
+    *     @OA\Response(
+    *         response=500,
+    *         description="Unexpected error",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="success", type="boolean", example=false),
+    *             @OA\Property(property="message", type="string", example="Internal error.")
+    *         )
+    *     )
+    * )
+    */
+    public function destroy(CardRequest $request){
+        try{
+            $user = auth()->user();
+            $this->cardService
+                ->setUser($user)
+                ->setId($request['cardId'])
+                ->checkUserCard()
+                ->deleteCard();
+            
+            return response()->json([
+                'message' => 'card deleted successfully'
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json(['message' => 'Validation Error'], 422);
+        } catch (AuthorizationException $e) {
+            return response()->json(['message' => 'you don\'t have the permission to delete this card.'], 403);
+        } catch(ModelNotFoundException $e) {
+            return response()->json(['message' => 'Not Found'], 404);
+        } catch (Exception $e) {
+            \Log::error($e->getMessage());
+            return response()->json(['message' => 'Error'], 500);
+        }
+    }
 }

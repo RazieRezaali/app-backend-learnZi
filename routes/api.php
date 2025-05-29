@@ -37,7 +37,7 @@ Route::prefix('cards')
         Route::post('/', 'store')->name('card.store');
         Route::get('/{cardId}', 'show')->name('card.show');
         Route::post('/description/{cardId}', 'storeDescription')->name('card.store.description');
-        // Route::delete('/{card}', 'destroy')->name('card.destroy');
+        Route::delete('/{cardId}', 'destroy')->name('card.destroy');
 });
 
 Route::prefix('user')

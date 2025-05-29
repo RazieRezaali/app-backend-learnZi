@@ -28,7 +28,7 @@ class CardRequest extends FormRequest
                 'character_id'  => ['required', 'integer', 'exists:characters,id'],
                 'category_id'   => ['required', 'integer', 'exists:categories,id'],
             ];
-        } elseif(in_array($route->getName(), ['card.show', 'card.store.description'])){
+        } elseif(in_array($route->getName(), ['card.show', 'card.store.description', 'card.destroy'])){
             return [
                 'cardId'  => ['required', 'integer', 'exists:cards,id'],
             ];
