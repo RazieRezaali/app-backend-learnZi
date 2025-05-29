@@ -40,9 +40,19 @@ Route::prefix('cards')
         // Route::delete('/{card}', 'destroy')->name('card.destroy');
 });
 
-Route::post('user/register',[AuthController::class,'register']);
-Route::post('user/login',[AuthController::class,'login']);
-Route::middleware('auth:sanctum')->post('user/logout', [AuthController::class, 'logout']);
-Route::middleware('auth:sanctum')->get('user/profile',[AuthController::class,'getProfile']);
+Route::prefix('user')
+    ->controller(AuthController::class)
+    ->group(function(){
+        Route::post('/register', 'register')->name('user.register');
+        Route::post('/login', 'login')->name('user.login');
+});
+
+Route::prefix('user')
+    ->middleware('auth:sanctum')
+    ->controller(AuthController::class)
+    ->group(function(){
+        Route::post('/logout', 'logout')->name('user.logout');
+        Route::get('/profile', 'getProfile')->name('user.get.profile');
+});
 
 Route::get('/countries', [CountryController::class, 'index']);

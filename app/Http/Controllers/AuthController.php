@@ -6,10 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\UserLoginRequest;
-use App\Http\Requests\UserRegisterRequest;
+use App\Http\Requests\AuthRequest;
 
 class AuthController extends Controller
 {
@@ -75,35 +72,11 @@ class AuthController extends Controller
     *                 @OA\Property(property="lname", type="string", example="Goodman"),
     *                 @OA\Property(property="email", type="string", example="saul@example.com"),
     *                 @OA\Property(property="phone", type="string", example="09123456789"),
-    *                 @OA\Property(property="age", type="integer", example=32),
+    *                 @OA\Property(property="age", type="string", example=32),
     *                 @OA\Property(property="country_id", type="integer", example=1),
     *                 @OA\Property(property="level_id", type="integer", example=3),
     *                 @OA\Property(property="created_at", type="string", format="date-time", example="2025-04-10T10:00:00Z")
     *             )
-    *         )
-    *     ),
-    *     @OA\Response(
-    *         response=401,
-    *         description="Unauthenticated",
-    *         @OA\JsonContent(
-    *             @OA\Property(property="success", type="boolean", example=false),
-    *             @OA\Property(property="message", type="string", example="Authentication needed.")
-    *         )
-    *     ),
-    *     @OA\Response(
-    *         response=403,
-    *         description="Forbidden",
-    *         @OA\JsonContent(
-    *             @OA\Property(property="success", type="boolean", example=false),
-    *             @OA\Property(property="message", type="string", example="Authorization needed.")
-    *         )
-    *     ),
-    *     @OA\Response(
-    *         response=404,
-    *         description="Not found",
-    *         @OA\JsonContent(
-    *             @OA\Property(property="success", type="boolean", example=false),
-    *             @OA\Property(property="message", type="string", example="Not found.")
     *         )
     *     ),
     *     @OA\Response(
@@ -133,14 +106,22 @@ class AuthController extends Controller
     *     )
     * )
     */
-    public function register(UserRegisterRequest $request)
+    public function register(AuthRequest $request)
     {
-        $user = $this->authService->register($request->validated());
-        $token = $user->createToken('learnzi')->plainTextToken;
-        return response()->json([
-            'token' => $token,
-            'user'  => $user,
-        ]);
+        try{
+            $user = $this->authService->register($request->all());
+            $token = $user->createToken('learnzi')->plainTextToken;
+            return response()->json([
+                'message' => 'user registered successfully.',
+                'token'   => $token,
+                'user'    => $user,
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json(['message' => 'Validation Error'], 422);
+        } catch (Exception $e) {
+            \Log::error($e->getMessage());
+            return response()->json(['message' => 'Error'], 500);
+        }
     }
 
     /**
@@ -165,28 +146,25 @@ class AuthController extends Controller
     *         response=200,
     *         description="Login successful",
     *         @OA\JsonContent(
+    *             @OA\Property(property="success", type="boolean", example=true),
+    *             @OA\Property(property="message", type="string", example="user login successfully."),
     *             @OA\Property(property="token", type="string", example="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."),
-    *             @OA\Property(property="user", type="object", @OA\Property(property="id", type="integer", example=1))
+    *              @OA\Property(property="user", type="object",
+    *                 @OA\Property(property="id", type="integer", example=1),
+    *                 @OA\Property(property="fname", type="string", example="Saul"),
+    *                 @OA\Property(property="lname", type="string", example="Goodman"),
+    *                 @OA\Property(property="email", type="string", example="saul@example.com"),
+    *                 @OA\Property(property="phone", type="string", example="09123456789"),
+    *                 @OA\Property(property="age", type="string", example=32),
+    *                 @OA\Property(property="country_id", type="integer", example=1),
+    *                 @OA\Property(property="level_id", type="integer", example=3),
+    *                 @OA\Property(property="created_at", type="string", format="date-time", example="2025-04-10T10:00:00Z")
+    *             )
     *         )
     *     ),
     *     @OA\Response(
-    *         response=401,
+    *         response=400,
     *         description="Invalid credentials"
-    *     ),@OA\Response(
-    *         response=403,
-    *         description="Forbidden",
-    *         @OA\JsonContent(
-    *             @OA\Property(property="success", type="boolean", example=false),
-    *             @OA\Property(property="message", type="string", example="Authorization needed.")
-    *         )
-    *     ),
-    *     @OA\Response(
-    *         response=404,
-    *         description="Not found",
-    *         @OA\JsonContent(
-    *             @OA\Property(property="success", type="boolean", example=false),
-    *             @OA\Property(property="message", type="string", example="Not found.")
-    *         )
     *     ),
     *     @OA\Response(
     *         response=422,
@@ -215,35 +193,166 @@ class AuthController extends Controller
     *     )
     * )
     */
-    public function login(UserLoginRequest $request): JsonResponse
+    public function login(AuthRequest $request)
     {
-        $credentials = $request->only('email', 'password');
-        
-        $token = $this->authService->login($credentials);
-        if (!$token) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+        try{
+            $credentials = $request->only('email', 'password');        
+            $token = $this->authService->login($credentials);
+            if (!$token) {
+                return response()->json(['message' => 'Invalid credentials'], 400);
+            }
+            return response()->json([
+                'message' => 'user login successfully.',
+                'token'   => $token,
+                'user'    => auth()->user(),
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json(['message' => 'Validation Error'], 422);
+        } catch (Exception $e) {
+            \Log::error($e->getMessage());
+            return response()->json(['message' => 'Error'], 500);
         }
-        return response()->json([
-            'token' => $token,
-            'user' => auth()->user(),
-        ]);
     }
 
-    public function logout(): JsonResponse
+    /**
+    * @OA\Post(
+    *     path="/api/user/logout",
+    *     summary="User logout",
+    *     security={{"sanctum":{}}},
+    *     tags={"Auth"},
+    *     description="This endpoint allows you to logout.",
+    *     operationId="logout",
+    *     @OA\Response(
+    *         response=200,
+    *         description="logout successful",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="success", type="boolean", example=true),
+    *             @OA\Property(property="message", type="string", example="user login successfully."),
+    *             @OA\Property(property="token", type="string", example="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."),
+    *              @OA\Property(property="user", type="object",
+    *                 @OA\Property(property="id", type="integer", example=1),
+    *                 @OA\Property(property="fname", type="string", example="Saul"),
+    *                 @OA\Property(property="lname", type="string", example="Goodman"),
+    *                 @OA\Property(property="email", type="string", example="saul@example.com"),
+    *                 @OA\Property(property="phone", type="string", example="09123456789"),
+    *                 @OA\Property(property="age", type="string", example=32),
+    *                 @OA\Property(property="country_id", type="integer", example=1),
+    *                 @OA\Property(property="level_id", type="integer", example=3),
+    *                 @OA\Property(property="created_at", type="string", format="date-time", example="2025-04-10T10:00:00Z")
+    *             )
+    *         )
+    *     ),
+    *     @OA\Response(
+    *         response=400,
+    *         description="you are not logged in"
+    *     ),
+    *     @OA\Response(
+    *         response=500,
+    *         description="Unexpected error",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="success", type="boolean", example=false),
+    *             @OA\Property(property="message", type="string", example="Internal error.")
+    *         )
+    *     )
+    * )
+    */
+    public function logout()
     {
-        auth()->user()->currentAccessToken()->delete();
-        return response()->json(['message' => 'Logged out successfully']);
+        try{
+            if(auth()->user()){
+                auth()->user()->currentAccessToken()->delete();
+                return response()->json([
+                    'message' => 'user logout successfully.'
+                ]);
+            }
+            return response()->json(['message' => 'you are not logged in'], 400);
+        } catch (Exception $e) {
+            \Log::error($e->getMessage());
+            return response()->json(['message' => 'Error'], 500);
+        }
     }
 
+    /**
+    * @OA\Get(
+    *     path="/api/user/profile",
+    *     tags={"Auth"},
+    *     security={{"sanctum":{}}},
+    *     summary="get the user's profile",
+    *     description="This endpoint allows you to get the user's profile.",
+    *     operationId="getProfile",
+    *     @OA\Response(
+    *         response=200,
+    *         description="Successful operation",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="message", type="string", example="User registered successfully."),
+    *             @OA\Property(property="user", type="object",
+    *                 @OA\Property(property="id", type="integer", example=1),
+    *                 @OA\Property(property="fname", type="string", example="Saul"),
+    *                 @OA\Property(property="lname", type="string", example="Goodman"),
+    *                 @OA\Property(property="email", type="string", example="saul@example.com"),
+    *                 @OA\Property(property="phone", type="string", example="09123456789"),
+    *                 @OA\Property(property="age", type="string", example=32),
+    *                 @OA\Property(property="country_id", type="integer", example=1),
+    *                 @OA\Property(property="level_id", type="integer", example=3),
+    *                 @OA\Property(property="created_at", type="string", format="date-time", example="2025-04-10T10:00:00Z"),
+    *                 @OA\Property(property="user_meta", type="object",
+    *                    @OA\Property(property="user_id", type="integer", example=1),
+    *                    @OA\Property(property="age", type="string", example="22"),
+    *                    @OA\Property(property="country_id", type="integer", example="25"),
+    *                    @OA\Property(property="level_id", type="integer", example="3"),
+    *                    @OA\Property(property="country", type="object",
+    *                       @OA\Property(property="id", type="integer", example=1),
+    *                       @OA\Property(property="name", type="string", example="Albania"),
+    *                       @OA\Property(property="code", type="string", example="AL"),
+    *                       @OA\Property(property="dial_code", type="string", example="+355")
+    *                    ),
+    *                    @OA\Property(property="level", type="object",
+    *                       @OA\Property(property="id", type="integer", example=3),
+    *                       @OA\Property(property="name", type="string", example="elementary"),
+    *                       @OA\Property(property="HSK", type="string", example="HSK3"),
+    *                       @OA\Property(property="CEFR", type="string", example="A2"),
+    *                       @OA\Property(property="vocabulary", type="integer", example="600")
+    *                    )
+    *                 )
+    *             )
+    *         )
+    *     ),
+    *     @OA\Response(
+    *         response=401,
+    *         description="Unauthenticated",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="success", type="boolean", example=false),
+    *             @OA\Property(property="message", type="string", example="Authentication needed.")
+    *         )
+    *     ),
+    *     @OA\Response(
+    *         response=500,
+    *         description="Unexpected error",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="success", type="boolean", example=false),
+    *             @OA\Property(property="message", type="string", example="Internal error.")
+    *         )
+    *     )
+    * )
+    */
     public function getProfile()
     {
-        $user = Auth::user();
-        if (!$user) {
-            return response()->json(['message' => 'Unauthenticated'], 401);
+        try{
+            $user = auth()->user();
+            if (!$user) {
+                return response()->json(['message' => 'Unauthenticated'], 401);
+            }
+            $userProfile = $this->authService
+                            ->setUser($user)
+                            ->setRelations(['userMeta', 'userMeta.country', 'userMeta.level'])
+                            ->getUserData();
+            return response()->json([
+                'message'     => 'user profile retrieved successfully.',
+                'userProfile' => $userProfile,
+            ]);
+        } catch (Exception $e) {
+            \Log::error($e->getMessage());
+            return response()->json(['message' => 'Error'], 500);
         }
-        $userProfile = User::with(['userMeta', 'userMeta.country', 'userMeta.level'])
-                            ->where('id', $user->id)
-                            ->first();
-        return response()->json($userProfile);
     }
 }

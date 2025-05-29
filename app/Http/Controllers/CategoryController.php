@@ -59,14 +59,6 @@ class CategoryController extends Controller
     *         )
     *     ),
     *     @OA\Response(
-    *         response=404,
-    *         description="Not found",
-    *         @OA\JsonContent(
-    *             @OA\Property(property="success", type="boolean", example=false),
-    *             @OA\Property(property="message", type="string", example="Not found.")
-    *         )
-    *     ),
-    *     @OA\Response(
     *         response=422,
     *         description="Validation error",
     *         @OA\JsonContent(
@@ -107,8 +99,6 @@ class CategoryController extends Controller
             ]);
         } catch (ValidationException $e) {
             return response()->json(['message' => 'Validation Error'], 422);
-        } catch(AuthorizationException $e) {
-            return response()->json(['message' => 'Authorization Exception'], 403);
         } catch (Exception $e) {
             \Log::error($e->getMessage());
             return response()->json(['message' => 'Error'], 500);

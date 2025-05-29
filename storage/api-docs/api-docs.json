@@ -127,7 +127,7 @@
                                                     "example": "09123456789"
                                                 },
                                                 "age": {
-                                                    "type": "integer",
+                                                    "type": "string",
                                                     "example": 32
                                                 },
                                                 "country_id": {
@@ -145,66 +145,6 @@
                                                 }
                                             },
                                             "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Authentication needed."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Authorization needed."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Not found."
                                         }
                                     },
                                     "type": "object"
@@ -306,6 +246,14 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "user login successfully."
+                                        },
                                         "token": {
                                             "type": "string",
                                             "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -315,6 +263,39 @@
                                                 "id": {
                                                     "type": "integer",
                                                     "example": 1
+                                                },
+                                                "fname": {
+                                                    "type": "string",
+                                                    "example": "Saul"
+                                                },
+                                                "lname": {
+                                                    "type": "string",
+                                                    "example": "Goodman"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "saul@example.com"
+                                                },
+                                                "phone": {
+                                                    "type": "string",
+                                                    "example": "09123456789"
+                                                },
+                                                "age": {
+                                                    "type": "string",
+                                                    "example": 32
+                                                },
+                                                "country_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "level_id": {
+                                                    "type": "integer",
+                                                    "example": 3
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-04-10T10:00:00Z"
                                                 }
                                             },
                                             "type": "object"
@@ -325,48 +306,8 @@
                             }
                         }
                     },
-                    "401": {
+                    "400": {
                         "description": "Invalid credentials"
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Authorization needed."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Not found."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
                     },
                     "422": {
                         "description": "Validation error",
@@ -421,6 +362,294 @@
                         }
                     }
                 }
+            }
+        },
+        "/api/user/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User logout",
+                "description": "This endpoint allows you to logout.",
+                "operationId": "logout",
+                "responses": {
+                    "200": {
+                        "description": "logout successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "user login successfully."
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                                        },
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "fname": {
+                                                    "type": "string",
+                                                    "example": "Saul"
+                                                },
+                                                "lname": {
+                                                    "type": "string",
+                                                    "example": "Goodman"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "saul@example.com"
+                                                },
+                                                "phone": {
+                                                    "type": "string",
+                                                    "example": "09123456789"
+                                                },
+                                                "age": {
+                                                    "type": "string",
+                                                    "example": 32
+                                                },
+                                                "country_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "level_id": {
+                                                    "type": "integer",
+                                                    "example": 3
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-04-10T10:00:00Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "you are not logged in"
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal error."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/user/profile": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "get the user's profile",
+                "description": "This endpoint allows you to get the user's profile.",
+                "operationId": "getProfile",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User registered successfully."
+                                        },
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "fname": {
+                                                    "type": "string",
+                                                    "example": "Saul"
+                                                },
+                                                "lname": {
+                                                    "type": "string",
+                                                    "example": "Goodman"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "saul@example.com"
+                                                },
+                                                "phone": {
+                                                    "type": "string",
+                                                    "example": "09123456789"
+                                                },
+                                                "age": {
+                                                    "type": "string",
+                                                    "example": 32
+                                                },
+                                                "country_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "level_id": {
+                                                    "type": "integer",
+                                                    "example": 3
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-04-10T10:00:00Z"
+                                                },
+                                                "user_meta": {
+                                                    "properties": {
+                                                        "user_id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "age": {
+                                                            "type": "string",
+                                                            "example": "22"
+                                                        },
+                                                        "country_id": {
+                                                            "type": "integer",
+                                                            "example": "25"
+                                                        },
+                                                        "level_id": {
+                                                            "type": "integer",
+                                                            "example": "3"
+                                                        },
+                                                        "country": {
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "integer",
+                                                                    "example": 1
+                                                                },
+                                                                "name": {
+                                                                    "type": "string",
+                                                                    "example": "Albania"
+                                                                },
+                                                                "code": {
+                                                                    "type": "string",
+                                                                    "example": "AL"
+                                                                },
+                                                                "dial_code": {
+                                                                    "type": "string",
+                                                                    "example": "+355"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        },
+                                                        "level": {
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "integer",
+                                                                    "example": 3
+                                                                },
+                                                                "name": {
+                                                                    "type": "string",
+                                                                    "example": "elementary"
+                                                                },
+                                                                "HSK": {
+                                                                    "type": "string",
+                                                                    "example": "HSK3"
+                                                                },
+                                                                "CEFR": {
+                                                                    "type": "string",
+                                                                    "example": "A2"
+                                                                },
+                                                                "vocabulary": {
+                                                                    "type": "integer",
+                                                                    "example": "600"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Authentication needed."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal error."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/cards": {
@@ -1190,26 +1419,6 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Authentication needed."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Not found."
                                         }
                                     },
                                     "type": "object"
