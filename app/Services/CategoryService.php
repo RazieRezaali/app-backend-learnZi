@@ -10,6 +10,7 @@ class CategoryService{
     protected $id;
     protected $relations;
     protected $name;
+    protected $category;
 
     public function setUser($user){
         $this->user = $user;
@@ -45,6 +46,15 @@ class CategoryService{
 
     public function getRelations(){
         return $this->relations;
+    }
+
+    public function setCategory($category){
+        $this->category = $category;
+        return $this;
+    }
+
+    public function getCategory(){
+        return $this->category;
     }
 
     public function store($data){
@@ -110,12 +120,23 @@ class CategoryService{
         }
     }
 
+    public function deleteCategoryWithAllChildren(){
+        try{
+            $category = Category::with('children')->find($this->getId());
+            $descendantsIds = $category->getAllDescendantsFlat()->pluck('id')->toArray();
+            $categoryIdsForDelete = array_merge($descendantsIds, [$category->id]);
+            foreach ($categoryIdsForDelete as $categoryId) {
+                $this->setId($categoryId);
+                $this->delete();
+            }
+        } catch(Exception $e){
+            throw $e;        
+        }
+    }
+
     public function delete(){
         try{
             $category = Category::find($this->getId());
-            $categoryChildren = $category->children;
-            \Log::info(json_encode($categoryChildren));
-            dd();
             $category->delete();
         } catch(Exception $e){
             throw $e;        

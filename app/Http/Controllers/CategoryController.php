@@ -704,7 +704,7 @@ class CategoryController extends Controller
                         ->setUser($user)
                         ->setId($request->categoryId)
                         ->checkUserCategory()
-                        ->delete();
+                        ->deleteCategoryWithAllChildren();
             return response()->json([
                 'message'  => 'category deleted successfully.'
             ]);

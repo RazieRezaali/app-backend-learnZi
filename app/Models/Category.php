@@ -42,5 +42,15 @@ class Category extends Model
         return $this->hasMany(Category::class, 'parent_id')
                     ->with(['childrenRecursive', 'cards.character']);
     }
-    
+
+    public function getAllDescendantsFlat()
+    {
+        $descendants = collect();
+        foreach ($this->children as $child) {
+            $descendants->push($child);
+            $descendants = $descendants->merge($child->getAllDescendantsFlat());
+        }
+        return $descendants;
+    }
+
 }
