@@ -55,6 +55,7 @@ Route::prefix('user')
     ->group(function(){
         Route::post('/logout', 'logout')->name('user.logout');
         Route::get('/profile', 'getProfile')->name('user.get.profile');
+        Route::put('/profile', 'updateProfile')->name('user.update.profile');
 });
 
 Route::get('/countries', [CountryController::class, 'index']);

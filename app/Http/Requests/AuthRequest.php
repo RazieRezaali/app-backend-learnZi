@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -39,7 +40,18 @@ class AuthRequest extends FormRequest
                 'email'    => ['required', 'email'],
                 'password' => ['required', 'string', 'min:8'],
             ];
-        }
+        } elseif($route->getName() == 'user.update.profile'){
+            return [
+                'fname'      => ['required', 'string', 'min:2', 'max:30'],
+                'lname'      => ['required', 'string', 'min:2', 'max:30'],
+                'email'      => ['required', 'email', Rule::unique('users', 'email')->ignore(auth()->id())],
+                'password'   => ['nullable', 'string', 'min:8', 'max:30', 'confirmed'],
+                'phone'      => ['required', 'string', 'regex:/^\+\d{10,15}$/'],
+                'age'        => ['required', 'string'],
+                'country_id' => ['required', 'integer', 'exists:countries,id'],
+                'level_id'   => ['required', 'integer', 'exists:levels,id'],
+            ];
+        } 
     }
 
     public function prepareForValidation()

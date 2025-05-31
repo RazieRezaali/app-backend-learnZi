@@ -9,7 +9,17 @@ use Illuminate\Support\Facades\Hash;
 class AuthService{
 
     protected $user;
+    protected $id;
     protected $relations;
+
+    public function setId($id){
+        $this->id = $id;
+        return $this;
+    }
+    
+    public function getId(){
+        return $this->id;
+    }
 
     public function setUser($user){
         $this->user = $user;
@@ -81,6 +91,30 @@ class AuthService{
                 $query->with($this->getRelations());
             }
             return $query->first();
+        } 
+        catch(Exception $e){
+            throw $e;        
+        }
+    }
+
+    public function updateUser($data)
+    {
+        try{
+            $user = User::find($this->getId());
+            $user->update([
+                'fname'     => $data['fname'],
+                'lname'     => $data['lname'],
+                'email'     => $data['email'],
+                'password'  => Hash::make($data['password']),
+                'phone'     => $data['phone']
+            ]);
+            UserMeta::where('user_id', $this->getId())
+                    ->update([
+                        'age'           => $data['age'],
+                        'country_id'    => $data['country_id'],
+                        'level_id'      => $data['level_id']
+                    ]);
+            return $user;
         } 
         catch(Exception $e){
             throw $e;        
