@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CardController;
+use App\Http\Controllers\PythonController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CharacterController;
@@ -59,3 +60,6 @@ Route::prefix('user')
 });
 
 Route::get('/countries', [CountryController::class, 'index']);
+
+Route::post('/ocr', [PythonController::class, 'ocr']);
+Route::post('/audio', [PythonController::class, 'audio']);
