@@ -72,8 +72,8 @@
                                         "example": "+989123456789"
                                     },
                                     "age": {
-                                        "type": "integer",
-                                        "example": 32
+                                        "type": "string",
+                                        "example": "32"
                                     },
                                     "country_id": {
                                         "type": "integer",
@@ -703,8 +703,8 @@
                                         "example": "+989123456789"
                                     },
                                     "age": {
-                                        "type": "integer",
-                                        "example": 32
+                                        "type": "string",
+                                        "example": "32"
                                     },
                                     "country_id": {
                                         "type": "integer",
@@ -3484,6 +3484,153 @@
                     }
                 }
             }
+        },
+        "/api/ocr": {
+            "post": {
+                "tags": [
+                    "PythonRequests"
+                ],
+                "summary": "Upload an image for OCR processing",
+                "description": "Accepts an image file and forwards it to the Python OCR service to extract text.",
+                "operationId": "uploadImageForOCR",
+                "requestBody": {
+                    "description": "Image file for OCR",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "image"
+                                ],
+                                "properties": {
+                                    "image": {
+                                        "description": "The image file to be processed",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OCR result returned successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "text": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            },
+                                            "example": [
+                                                "Detected text line 1",
+                                                "Detected text line 2"
+                                            ]
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request - No image uploaded",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "No image uploaded"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error - OCR service failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Failed to process image"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/audio": {
+            "post": {
+                "tags": [
+                    "PythonRequests"
+                ],
+                "summary": "Generate audio from character input",
+                "description": "Sends a character to the Python TTS service and returns the generated audio.",
+                "operationId": "generateAudioFromCharacter",
+                "requestBody": {
+                    "description": "Character data for getting its audio",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "character"
+                                ],
+                                "properties": {
+                                    "character": {
+                                        "description": "The character to generate audio for",
+                                        "type": "string",
+                                        "example": "你"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Audio response",
+                        "content": {
+                            "audio/mpeg": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to generate audio",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Failed to fetch audio"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "tags": [
@@ -3506,6 +3653,10 @@
         {
             "name": "Country",
             "description": "Country"
+        },
+        {
+            "name": "PythonRequests",
+            "description": "PythonRequests"
         }
     ],
     "components": {
