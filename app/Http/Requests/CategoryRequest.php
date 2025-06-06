@@ -26,7 +26,11 @@ class CategoryRequest extends FormRequest
         $route = Route::current();
         if($route->getName() == 'category.store'){
             return [
-                'name'       => ['required', 'string', 'min:2', 'max:30', 'unique:categories'],
+                'name'       => ['required', 'string', 'min:2', 'max:30', 
+                                    Rule::unique('categories')->where(function ($query) {
+                                        $query->where('user_id', auth()->user()->id);
+                                    }),
+                                ],
                 'parent_id'  => ['sometimes', 'nullable', 'integer', 'exists:categories,id'],
             ];
         } elseif(in_array($route->getName(), ['category.get.cards', 'category.get.quiz.characters', 'category.destroy'])){
@@ -35,7 +39,13 @@ class CategoryRequest extends FormRequest
             ];
         } elseif($route->getName() == 'category.update.name'){
             return [
-                'name'       => ['required', 'string', 'min:2', 'max:30', Rule::unique('categories', 'name')->ignore($this->categoryId)],
+                'name'       => ['required', 'string', 'min:2', 'max:30',
+                                    Rule::unique('categories', 'name')
+                                        ->ignore($this->categoryId)
+                                        ->where(function ($query) {
+                                            $query->where('user_id', auth()->id());
+                                    }),
+                                ],
                 'categoryId' => ['required', 'integer', 'exists:categories,id'],
             ];
         }
@@ -48,5 +58,12 @@ class CategoryRequest extends FormRequest
                 'categoryId' => $this->categoryId,
             ]);
         }
+    }
+
+    public function messages()
+    {    
+        return [
+            'name.unique' => 'You already have a category with this name.',
+        ];
     }
 }
