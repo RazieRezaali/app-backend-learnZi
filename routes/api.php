@@ -61,5 +61,8 @@ Route::prefix('user')
 
 Route::get('/countries', [CountryController::class, 'index']);
 
-Route::post('/ocr', [PythonController::class, 'ocr']);
-Route::post('/audio', [PythonController::class, 'audio']);
+Route::controller(PythonController::class)
+    ->group(function(){
+        Route::post('/ocr', 'ocr')->name('ocr');
+        Route::post('/audio', 'audio')->name('audio');
+});
