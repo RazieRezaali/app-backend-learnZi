@@ -172,11 +172,7 @@ class CharacterController extends Controller
     */
     public function getCharactersBySearch(CharacterRequest $request)
     {
-        try{
-            $keyword = $request->query('keyword');
-            if (!$keyword) {
-                return response()->json(['message' => 'No keyword provided.'], 400);
-            }            
+        try{   
             $characters = $this->characterService
                             ->setKeyword($keyword)
                             ->getCharacters();
