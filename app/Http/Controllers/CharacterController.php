@@ -172,7 +172,8 @@ class CharacterController extends Controller
     */
     public function getCharactersBySearch(CharacterRequest $request)
     {
-        try{   
+        try{
+            $keyword = $request->query('keyword');
             $characters = $this->characterService
                             ->setKeyword($keyword)
                             ->getCharacters();
