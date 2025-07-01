@@ -41,8 +41,10 @@ This repository contains the backend of the LearnZi project — an educational p
 **Start Laravel Development Server**
 
     php artisan serve
+
+**To generate the Swagger documentation, run the following command:**
+    php artisan l5-swagger:generate
  
-## Python Services (OCR & Audio)
 ## Install Python Dependencies
 
 **Navigate to the pythonFiles/ directory:**
@@ -57,11 +59,6 @@ This repository contains the backend of the LearnZi project — an educational p
 
     python3 ocr.py
     python3 audio.py
-
-## API Documentation (Swagger)
-
-**This project uses Swagger (OpenAPI) for documenting the REST API, To generate the Swagger documentation, run the following command:**
-    php artisan l5-swagger:generate
 
 ## Notes
 
