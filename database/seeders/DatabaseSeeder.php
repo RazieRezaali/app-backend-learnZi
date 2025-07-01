@@ -21,14 +21,14 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([CountrySeeder::class]);
         $this->call([LevelSeeder::class]);
-        $this->call([UserSeeder::class]);
+        // $this->call([UserSeeder::class]);
 
         $charactersCount = \App\Models\Character::count();
         if($charactersCount == 0){
             $this->call([CharacterSeeder::class]);
         }
 
-        $this->call([CategorySeeder::class]);
-        $this->call([CardSeeder::class]);
+        // $this->call([CategorySeeder::class]);
+        // $this->call([CardSeeder::class]);
     }
 }
